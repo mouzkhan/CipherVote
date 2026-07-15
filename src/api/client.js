@@ -159,6 +159,7 @@ export const api = {
   // VaaS — Voting as a Service
   getPlans:              ()        => requestWithRetry("GET", "/plans"),
   registerOrganization:  (body)    => requestWithRetry("POST", "/organizations/register", body),
+  loginOrganization:     (body)    => requestWithRetry("POST", "/organizations/login", body),
   getOrganizations:      ()        => requestWithRetry("GET", "/organizations"),
   updateOrganization:    (id, b)   => requestWithRetry("PATCH", `/organizations/${id}`, b),
   

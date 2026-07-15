@@ -13,10 +13,11 @@ const mongoose = require("mongoose");
 const OrganizationSchema = new mongoose.Schema({
   name:        { type: String, required: true },          // e.g. "FAST NUCES Lahore"
   slug:        { type: String, required: true, unique: true }, // e.g. "fast-nuces-lahore"
-  type:        { type: String, enum: ["university", "government", "corporate", "ngo", "community"], default: "university" },
+  type:        { type: String, enum: ["university", "company", "government", "ngo", "association", "corporate", "community", "other"], default: "university" },
   country:     { type: String, default: "Pakistan" },
   city:        { type: String, default: "" },
   contactEmail:{ type: String, required: true },
+  password:    { type: String, required: true },  // for organization admin login
   apiKey:      { type: String, required: true, unique: true }, // generated on registration
   plan:        { type: String, enum: ["free", "basic", "professional", "enterprise"], default: "free" },
   status:      { type: String, enum: ["active", "suspended", "pending", "verified"], default: "pending" },

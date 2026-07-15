@@ -16,6 +16,7 @@ import Pricing from "./pages/Pricing";
 // Platform User Pages
 import UserDashboard from "./pages/UserDashboard";
 import CreateOrganization from "./pages/CreateOrganization";
+import OrganizationLogin from "./pages/OrganizationLogin";
 
 // Organization Admin Pages
 import OrganizationDashboard from "./pages/OrganizationDashboard";
@@ -61,6 +62,7 @@ function App() {
             <Route path="/verify" element={<Verify />} />
             <Route path="/audit/:electionId" element={<AuditLog />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/org-login" element={<OrganizationLogin />} />
 
             {/* ==================== PLATFORM USER ROUTES ==================== */}
             {/* After login, user can access dashboard and create organizations */}

@@ -28,7 +28,9 @@ export default function CreateOrganization() {
     description: "",
     country: "Pakistan",
     city: "",
-    contactEmail: ""
+    contactEmail: "",
+    password: "",
+    confirmPassword: ""
   });
   
   const [selectedPlan, setSelectedPlan] = useState("free");
@@ -79,6 +81,21 @@ export default function CreateOrganization() {
       return;
     }
 
+    if (!formData.password) {
+      setError("Password is required");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
@@ -90,6 +107,7 @@ export default function CreateOrganization() {
         country: formData.country,
         city: formData.city,
         contactEmail: formData.contactEmail || user?.email,
+        password: formData.password,
         plan: selectedPlan
       });
 
@@ -242,6 +260,29 @@ export default function CreateOrganization() {
                 value={formData.contactEmail}
                 onChange={(e) => setFormData({ ...formData, contactEmail: e.target.value })}
                 placeholder={user?.email || "admin@organization.com"}
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="label">Password * (for organization admin login)</label>
+              <input
+                type="password"
+                className="input"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                placeholder="At least 6 characters"
+              />
+              <small className="text-muted">You'll use this to login to your organization dashboard</small>
+            </div>
+
+            <div className="form-group">
+              <label className="label">Confirm Password *</label>
+              <input
+                type="password"
+                className="input"
+                value={formData.confirmPassword}
+                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                placeholder="Re-enter your password"
               />
             </div>
 

@@ -981,16 +981,25 @@ app.get("/api/plans", (_, res) => res.json(PLANS));
 
 // Register an organization (tenant)
 app.post("/api/organizations/register", async (req, res) => {
-  const { name, type, country, city, contactEmail, plan, verification } = req.body;
+  const { name, type, country, city, contactEmail, password, plan, verification } = req.body;
   
   // Validate required fields
-  if (!name || !contactEmail) {
-    return res.status(400).json({ error: "Name and contact email are required" });
+  if (!name || !contactEmail || !password) {
+    return res.status(400).json({ error: "Name, contact email, and password are required" });
+  }
+
+  // Validate password strength
+  if (password.length < 6) {
+    return res.status(400).json({ error: "Password must be at least 6 characters" });
   }
 
   const normalizedName = String(name || '').trim();
   const slug = normalizedName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   const selectedPlan = PLANS[plan] || PLANS.free;
+  
+  // Validate organization type (default to 'university' if not provided or invalid)
+  const validTypes = ["university", "company", "government", "ngo", "association", "corporate", "community", "other"];
+  const orgType = validTypes.includes(type) ? type : "university";
 
   try {
     const verificationPayload = verification || {};
@@ -999,19 +1008,23 @@ app.post("/api/organizations/register", async (req, res) => {
     if (!isDbReady()) {
       const duplicate = fallbackStore.organizations.some((org) => {
         const storedName = String(org.name || '').trim().toLowerCase();
-        return storedName === normalizedName.toLowerCase() || org.slug === slug;
+        return storedName === normalizedName.toLowerCase() || org.slug === slug || org.contactEmail === contactEmail;
       });
       if (duplicate) {
-        return res.status(409).json({ error: "An organization with this name already exists." });
+        return res.status(409).json({ error: "An organization with this name or email already exists." });
       }
+      
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      
       const org = {
         _id: makeId("org"),
         name,
         slug,
-        type,
+        type: orgType,
         country: country || "Pakistan",
         city: city || "",
         contactEmail,
+        password: hashedPassword,
         apiKey: generateApiKey(),
         plan: plan || "free",
         status: verificationStatus,
@@ -1021,34 +1034,137 @@ app.post("/api/organizations/register", async (req, res) => {
         createdAt: Date.now(),
       };
       fallbackStore.organizations.push(org);
-      return res.json({ ok: true, organizationId: org._id, slug: org.slug, apiKey: org.apiKey, plan: selectedPlan.name, status: org.status, organization: { id: org._id, status: org.status, verificationStatus: verificationPayload.status || 'pending' } });
+      return res.json({ 
+        ok: true, 
+        organizationId: org._id, 
+        slug: org.slug, 
+        apiKey: org.apiKey, 
+        plan: selectedPlan.name, 
+        status: org.status, 
+        organization: { 
+          id: org._id, 
+          name: org.name,
+          slug: org.slug,
+          status: org.status, 
+          verificationStatus: verificationPayload.status || 'pending' 
+        } 
+      });
     }
 
     // Check for duplicate in MongoDB
     const existingOrg = await Organization.findOne({
       $or: [
         { name: { $regex: new RegExp(`^${normalizedName}$`, 'i') } },
-        { slug: slug }
+        { slug: slug },
+        { contactEmail: contactEmail }
       ]
     });
     
     if (existingOrg) {
-      return res.status(409).json({ error: "An organization with this name already exists" });
+      return res.status(409).json({ error: "An organization with this name or email already exists" });
     }
 
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
     const org = await Organization.create({
-      name, slug, type, country: country || "Pakistan", city: city || "",
-      contactEmail, apiKey: generateApiKey(), plan: plan || "free",
+      name, 
+      slug, 
+      type: orgType, 
+      country: country || "Pakistan", 
+      city: city || "",
+      contactEmail, 
+      password: hashedPassword,
+      apiKey: generateApiKey(), 
+      plan: plan || "free",
       status: verificationStatus,
       verification: verificationPayload,
       maxElections: selectedPlan.maxElections,
       maxVoters: selectedPlan.maxVoters,
     });
-    res.json({ ok: true, organizationId: org._id, slug: org.slug, apiKey: org.apiKey, plan: selectedPlan.name, status: org.status, organization: { id: org._id, status: org.status, verificationStatus: org.verification?.status || 'pending' } });
+    
+    res.json({ 
+      ok: true, 
+      organizationId: org._id, 
+      slug: org.slug, 
+      apiKey: org.apiKey, 
+      plan: selectedPlan.name, 
+      status: org.status, 
+      organization: { 
+        id: org._id, 
+        name: org.name,
+        slug: org.slug,
+        status: org.status, 
+        verificationStatus: org.verification?.status || 'pending' 
+      } 
+    });
   } catch (err) {
     console.error("Organization registration failed:", err.message);
-    if (err.code === 11000) return res.status(409).json({ error: "An organization with this name already exists" });
+    if (err.code === 11000) return res.status(409).json({ error: "An organization with this name or email already exists" });
     res.status(400).json({ error: err.message });
+  }
+});
+
+// Organization login endpoint
+app.post("/api/organizations/login", async (req, res) => {
+  const { email, password } = req.body;
+  
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required" });
+  }
+
+  try {
+    if (!isDbReady()) {
+      const org = fallbackStore.organizations.find(o => o.contactEmail === email);
+      if (!org) {
+        return res.status(401).json({ error: "Invalid email or password" });
+      }
+      
+      const passwordMatch = bcrypt.compareSync(password, org.password);
+      if (!passwordMatch) {
+        return res.status(401).json({ error: "Invalid email or password" });
+      }
+      
+      return res.json({
+        ok: true,
+        organization: {
+          id: org._id,
+          name: org.name,
+          slug: org.slug,
+          type: org.type,
+          status: org.status,
+          plan: org.plan,
+          contactEmail: org.contactEmail
+        }
+      });
+    }
+
+    const org = await Organization.findOne({ contactEmail: email });
+    if (!org) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    const passwordMatch = bcrypt.compareSync(password, org.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    res.json({
+      ok: true,
+      organization: {
+        id: org._id,
+        name: org.name,
+        slug: org.slug,
+        type: org.type,
+        status: org.status,
+        plan: org.plan,
+        contactEmail: org.contactEmail,
+        maxElections: org.maxElections,
+        maxVoters: org.maxVoters
+      }
+    });
+  } catch (err) {
+    console.error("Organization login failed:", err.message);
+    res.status(500).json({ error: "Login failed" });
   }
 });
 

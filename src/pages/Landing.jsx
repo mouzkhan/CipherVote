@@ -109,6 +109,11 @@ export default function Landing() {
               Public Audit Log
             </Link>
           </div>
+          <div style={{ textAlign: 'center', marginTop: '16px' }}>
+            <Link to="/org-login" className="link" style={{ fontSize: '0.9rem' }}>
+              🏢 Organization Admin Login
+            </Link>
+          </div>
           <div className="hero-stats">
             {STATISTICS.map((stat, i) => (
               <div key={i} className="hero-stat">
