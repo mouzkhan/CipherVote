@@ -1,0 +1,43 @@
+.admin-outer { padding-top: 30px; }
+
+.admin-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); margin-bottom: 0; }
+.tab-btn {
+  padding: 10px 20px; background: none; border: none; border-bottom: 2px solid transparent;
+  color: var(--muted); cursor: pointer; font-size: 0.9rem; transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--text); }
+.tab-active { color: var(--primary) !important; border-bottom-color: var(--primary) !important; }
+
+.tally-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.tally-name { width: 160px; font-size: 0.9rem; flex-shrink: 0; }
+.tally-bar-wrap { flex: 1; background: var(--surface); border-radius: 99px; height: 8px; overflow: hidden; }
+.tally-bar { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.6s; min-width: 2px; }
+.tally-count { width: 90px; font-size: 0.85rem; text-align: right; flex-shrink: 0; }
+@media (max-width: 768px) {
+  .admin-tabs { overflow-x: auto; }
+  .tally-row { flex-wrap: wrap; }
+  .tally-name { width: 100%; }
+  .tally-count { width: auto; text-align: left; }
+}
+
+.candidate-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.candidate-chip {
+  display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 99px; font-size: 0.85rem;
+}
+.candidate-avatar-sm {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-d));
+  display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700;
+}
+.chip-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0; line-height: 1; }
+.chip-remove:hover { color: var(--danger); }
+.ml-2 { margin-left: 8px; }
+
+.sim-results { }
+.arch-diagram { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; padding: 20px; background: var(--surface); border-radius: 8px; }
+.arch-node {
+  padding: 8px 14px; border-radius: 6px; font-size: 0.82rem; font-weight: 600;
+  background: var(--card); border: 1px solid var(--border); color: var(--text); white-space: nowrap;
+}
+.arch-arrow { color: var(--muted); font-size: 1rem; }

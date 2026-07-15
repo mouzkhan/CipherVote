@@ -1,0 +1,14 @@
+{
+  "enabled": true,
+  "name": "Install Axios",
+  "description": "Installing axios for API communication",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "runCommand",
+    "command": "npm install axios",
+    "timeout": 60
+  }
+}

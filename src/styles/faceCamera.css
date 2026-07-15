@@ -1,0 +1,180 @@
+.face-camera-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+/* ── Viewport ── */
+.face-viewport {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 4/3;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  border: 2px solid var(--border);
+  box-shadow: 0 0 40px rgba(102,126,234,0.2);
+}
+
+.face-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1); /* mirror for natural selfie feel */
+  display: block;
+}
+
+.face-canvas {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(-1);
+  pointer-events: none;
+}
+
+/* Oval guide overlay */
+.face-oval {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 55%;
+  height: 72%;
+  border-radius: 50%;
+  border: 2px dashed rgba(102,126,234,0.6);
+  pointer-events: none;
+  animation: pulse-oval 2s ease-in-out infinite;
+}
+
+@keyframes pulse-oval {
+  0%, 100% { border-color: rgba(102,126,234,0.4); }
+  50%       { border-color: rgba(0,212,170,0.7); }
+}
+
+/* Status dot: top-right corner */
+.face-status-dot {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.5);
+}
+.dot-green { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+.dot-red   { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
+
+/* ── Info panel ── */
+.face-info {
+  width: 100%;
+  max-width: 420px;
+}
+
+.face-progress-wrap {
+  background: var(--surface);
+  border-radius: 99px;
+  height: 6px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.face-progress-bar {
+  height: 100%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width 0.35s ease;
+}
+
+.face-message {
+  font-size: 0.9rem;
+  text-align: center;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  margin-bottom: 10px;
+}
+
+.face-help-card {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(102,126,234,0.1);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: center;
+}
+.face-ok  { color: var(--accent) !important; font-weight: 600; }
+.face-err { color: var(--danger) !important; }
+
+.face-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+.face-metric {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--surface);
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+}
+
+.text-warning {
+  color: #f59e0b;
+}
+
+/* Eye state indicator styles */
+.eye-state-indicator {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Improve help card list styling */
+.face-help-card ul {
+  list-style-type: disc;
+}
+
+.face-help-card li {
+  margin-bottom: 4px;
+  color: var(--text);
+}
+
+.face-help-card li:last-child {
+  margin-bottom: 0;
+}
+
+/* Countdown overlay */
+.countdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.countdown-number {
+  font-size: 6rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 0 40px rgba(99, 102, 241, 0.8);
+  animation: countdown-pulse 1s ease-in-out infinite;
+}
+
+@keyframes countdown-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}

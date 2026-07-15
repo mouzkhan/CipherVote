@@ -1,0 +1,109 @@
+.winner-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+}
+
+.winner-card h2 {
+  margin: 0 0 1rem 0;
+}
+
+.winner-card h3 {
+  margin: 0 0 0.5rem 0;
+}
+
+.winner-card .text-muted {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.winner-photo {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid white;
+}
+
+.results-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.result-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.result-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.result-stats strong {
+  font-size: 1.25rem;
+}
+
+.candidate-photo-small {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.candidates-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.candidate-card-small {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  align-items: center;
+  text-align: center;
+}
+
+.candidate-photo-medium {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.candidate-info-small {
+  flex: 1;
+}
+
+.candidate-info-small h4 {
+  margin: 0 0 0.25rem 0;
+  color: #2c3e50;
+}
+
+.candidate-info-small p {
+  margin: 0 0 0.5rem 0;
+}
+
+.vote-count {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.vote-count strong {
+  color: #667eea;
+  font-size: 1.5rem;
+}
