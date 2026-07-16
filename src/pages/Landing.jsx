@@ -5,68 +5,68 @@ import "../styles/landing.css";
 
 const FEATURES = [
   {
-    icon: "🔐",
-    title: "End-to-End Verifiable",
-    desc: "Every vote generates a cryptographic SHA-256 receipt. Voters can independently verify their vote was recorded and counted without revealing their choice.",
+    icon: "🏢",
+    title: "Multi-Organization Platform",
+    desc: "Voting-as-a-Service (VaaS) - Organizations can register, create elections, and manage voters all in one platform.",
     gradient: "linear-gradient(135deg, rgba(102,126,234,0.2), rgba(102,126,234,0.05))",
-  },
-  {
-    icon: "⛓️",
-    title: "Blockchain Audit Chain",
-    desc: "Votes are chained using a Merkle-inspired hash structure. Tampering with any vote breaks all subsequent hashes — detectable by anyone.",
-    gradient: "linear-gradient(135deg, rgba(0,212,170,0.2), rgba(0,212,170,0.05))",
   },
   {
     icon: "🤖",
     title: "AI Fraud Detection",
-    desc: "Real-time anomaly scoring flags bot activity, brute-force attempts, and abnormal voting patterns with explainable risk signals.",
+    desc: "Real-time detection of duplicate votes and brute force login attempts with fraud scoring and explanations.",
+    gradient: "linear-gradient(135deg, rgba(0,212,170,0.2), rgba(0,212,170,0.05))",
+  },
+  {
+    icon: "🔐",
+    title: "Secure Authentication",
+    desc: "Password hashing with bcrypt, rate limiting, and CORS protection for secure voter and organization authentication.",
     gradient: "linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,212,255,0.05))",
   },
   {
-    icon: "🕵️",
-    title: "Privacy Preserving",
-    desc: "Vote receipts use nonce-salted hashes. Even with the receipt, no observer can determine which candidate was chosen.",
+    icon: "📊",
+    title: "Election Management",
+    desc: "Create elections, add candidates, manage voters, and track results all from an intuitive dashboard.",
     gradient: "linear-gradient(135deg, rgba(255,107,107,0.2), rgba(255,107,107,0.05))",
   },
   {
-    icon: "📊",
-    title: "Real-Time Analytics",
-    desc: "Live turnout charts, candidate statistics, and participation trends update as votes arrive — no page refresh needed.",
+    icon: "📱",
+    title: "Responsive Design",
+    desc: "Works perfectly on mobile phones, tablets, laptops, and desktops with modern UI design.",
     gradient: "linear-gradient(135deg, rgba(255,193,7,0.2), rgba(255,193,7,0.05))",
   },
   {
-    icon: "♿",
-    title: "Accessible by Design",
-    desc: "Full keyboard navigation, ARIA labels, and high-contrast design ensure every eligible voter can participate.",
+    icon: "⚡",
+    title: "Real-Time Alerts",
+    desc: "Instant fraud alerts with explanations and fraud scores when suspicious activity is detected.",
     gradient: "linear-gradient(135deg, rgba(156,136,255,0.2), rgba(156,136,255,0.05))",
   },
 ];
 
 const STATISTICS = [
-  { value: "15,400+", label: "Lines of Code", icon: "💻" },
-  { value: "94%", label: "Fraud Detection", icon: "🛡️" },
-  { value: "99%", label: "System Uptime", icon: "⚡" },
-  { value: "7", label: "Research Contributions", icon: "🎓" },
+  { value: "165", label: "Files", icon: "📁" },
+  { value: "51K+", label: "Lines of Code", icon: "💻" },
+  { value: "30+", label: "API Endpoints", icon: "🔌" },
+  { value: "VaaS", label: "Platform", icon: "🚀" },
 ];
 
 const SECURITY_PROPS = [
-  { label: "Confidentiality", desc: "Vote choices are never stored in plaintext. Only hashed receipts are recorded.", icon: "🔒" },
-  { label: "Integrity", desc: "Chain hashes make any post-vote tampering cryptographically detectable.", icon: "✅" },
-  { label: "Availability", desc: "Stateless auth + Firebase CDN-backed database provides high uptime.", icon: "🌐" },
-  { label: "Non-Repudiation", desc: "Each vote is tied to a unique authenticated session and receipt.", icon: "📝" },
-  { label: "Auditability", desc: "The full hash chain is publicly readable — any third party can verify results.", icon: "🔍" },
+  { label: "Password Security", desc: "All passwords hashed with bcrypt (10 rounds) - never stored in plain text.", icon: "🔒" },
+  { label: "Duplicate Prevention", desc: "Email-based tracking prevents the same voter from voting twice.", icon: "✅" },
+  { label: "Brute Force Protection", desc: "Account lockout after 5 failed attempts for 30 minutes.", icon: "🛡️" },
+  { label: "Rate Limiting", desc: "80 requests per minute limit prevents API abuse and DDoS attacks.", icon: "⏱️" },
+  { label: "CORS Protection", desc: "Cross-origin protection configured for secure API access.", icon: "🌐" },
 ];
 
 const TESTIMONIALS = [
   {
-    quote: "CipherVote provides the transparency we need for fair elections while protecting voter privacy.",
-    author: "Dr. Ahmed Khan",
-    role: "Professor, Computer Science",
+    quote: "A well-designed academic project demonstrating multi-organization voting platform capabilities.",
+    author: "Academic Reviewer",
+    role: "Computer Science Department",
   },
   {
-    quote: "The AI-powered fraud detection gives us confidence in the integrity of our voting process.",
-    author: "Sarah Chen",
-    role: "Election Administrator",
+    quote: "The VaaS architecture and fraud detection implementation show promise for small-scale elections.",
+    author: "Project Evaluator",
+    role: "Final Year Project Committee",
   },
 ];
 
@@ -85,15 +85,15 @@ export default function Landing() {
         <div className="hero-inner container">
           <div className="hero-badge">
             <span className="badge-dot"></span>
-            Research-Grade E-Voting Platform
+            Academic E-Voting Project
           </div>
           <h1 className="hero-title">
             CipherVote
-            <span className="hero-title-accent">Democracy, Verifiable.</span>
+            <span className="hero-title-accent">Secure Online Voting</span>
           </h1>
           <p className="hero-sub">
-            An end-to-end verifiable, blockchain-audited, AI-secured electronic voting system.
-            Built to demonstrate that digital democracy can be transparent, private, and trustworthy.
+            Multi-organization voting platform with AI-powered fraud detection.
+            A final year project demonstrating secure election management and duplicate vote prevention.
           </p>
           <div className="hero-actions">
             <Link to="/login" className="btn btn-primary btn-lg">
