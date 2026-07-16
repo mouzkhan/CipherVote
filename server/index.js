@@ -252,7 +252,15 @@ app.get("/api/organizations/:orgId/dashboard", async (req, res) => {
       const activeElections = orgElections.filter((e) => e.status === "active").length;
       const upcomingElections = orgElections.filter((e) => e.status === "draft").length;
       const completedElections = orgElections.filter((e) => e.status === "closed").length;
-      const totalVotes = orgElections.reduce((sum, e) => sum + (e.totalVotes || 0), 0);
+      
+      // Count actual votes from Vote collection
+      let totalVotes = 0;
+      orgElections.forEach(election => {
+        const electionVotes = fallbackStore.votes.filter(v => v.electionId === election._id);
+        election.totalVotes = electionVotes.length;
+        totalVotes += electionVotes.length;
+      });
+      
       const registeredVoters = fallbackStore.voterRegistrations.filter(
         (r) => orgElections.some((e) => e._id === r.electionId)
       ).length;
@@ -273,12 +281,30 @@ app.get("/api/organizations/:orgId/dashboard", async (req, res) => {
     const activeElections = orgElections.filter((e) => e.status === "active").length;
     const upcomingElections = orgElections.filter((e) => e.status === "draft").length;
     const completedElections = orgElections.filter((e) => e.status === "closed").length;
-    const totalVotes = orgElections.reduce((sum, e) => sum + (e.totalVotes || 0), 0);
+    
+    // Count actual votes from Vote collection for each election
+    let totalVotes = 0;
+    for (let election of orgElections) {
+      const voteCount = await Vote.countDocuments({ electionId: election._id.toString() });
+      election.totalVotes = voteCount;
+      totalVotes += voteCount;
+    }
     
     const electionIds = orgElections.map((e) => e._id.toString());
     const registeredVoters = await VoterRegistration.countDocuments({
       electionId: { $in: electionIds },
     });
+    
+    // Get recent elections with vote counts
+    const recentElections = await Election.find({ organizationId: orgId })
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .lean();
+    
+    // Add vote counts to recent elections
+    for (let election of recentElections) {
+      election.totalVotes = await Vote.countDocuments({ electionId: election._id.toString() });
+    }
     
     res.json({
       totalElections,
@@ -287,9 +313,7 @@ app.get("/api/organizations/:orgId/dashboard", async (req, res) => {
       completedElections,
       registeredVoters,
       votesCast: totalVotes,
-      recentElections: await Election.find({ organizationId: orgId })
-        .sort({ createdAt: -1 })
-        .limit(5),
+      recentElections,
     });
   } catch (err) { res.status(500).json({ error: err.message }); }
 });
