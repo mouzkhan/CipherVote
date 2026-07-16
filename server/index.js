@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const multer = require("multer");
 const path = require("path");
+const bcrypt = require("bcrypt");
 
 const Election     = require("./models/Election");
 const Vote         = require("./models/Vote");

@@ -109,9 +109,31 @@ export default function Landing() {
               Public Audit Log
             </Link>
           </div>
-          <div style={{ textAlign: 'center', marginTop: '16px' }}>
-            <Link to="/org-login" className="link" style={{ fontSize: '0.9rem' }}>
-              🏢 Organization Admin Login
+          <div style={{ 
+            textAlign: 'center', 
+            marginTop: '20px',
+            padding: '16px',
+            background: 'rgba(102, 126, 234, 0.08)',
+            borderRadius: '12px',
+            border: '1px solid rgba(102, 126, 234, 0.2)'
+          }}>
+            <Link 
+              to="/org-login" 
+              style={{ 
+                color: 'var(--primary)',
+                textDecoration: 'none',
+                fontSize: '0.95rem',
+                fontWeight: '500',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                transition: 'color 0.2s'
+              }}
+              onMouseEnter={(e) => e.target.style.color = 'var(--accent)'}
+              onMouseLeave={(e) => e.target.style.color = 'var(--primary)'}
+            >
+              <span style={{ fontSize: '1.2rem' }}>🏢</span>
+              Organization Admin Login
             </Link>
           </div>
           <div className="hero-stats">
